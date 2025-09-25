@@ -6,8 +6,8 @@
         <Nullable>enable</Nullable>
         <OutputType>Exe</OutputType>
         <IsPackable>false</IsPackable>
-        <RootNamespace>Evaluate.ReadingWritingExcel.Tests</RootNamespace>
-        <AssemblyName>PaulRoho.Evaluate.ReadingWritingExcel.Tests</AssemblyName>
+        <RootNamespace>Evaluate.ReadingWritingExcel.Specs</RootNamespace>
+        <AssemblyName>PaulRoho.Evaluate.ReadingWritingExcel.Specs</AssemblyName>
 
         <!-- To enable Microsoft.Testing.Platform, uncomment the following line. -->
         <!-- <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner> -->

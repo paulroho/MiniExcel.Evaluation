@@ -1,8 +1,8 @@
 ﻿using Shouldly;
 
-namespace Evaluate.ReadingWritingExcel.Tests;
+namespace Evaluate.ReadingWritingExcel.Specs;
 
-public class ExcelExporterTests
+public class WritingExcelFileSpecs
 {
     [Fact]
     public void CanCreateExcelFile()

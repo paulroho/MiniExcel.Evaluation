@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace Evaluate.ReadingWritingExcel.Tests;
+namespace Evaluate.ReadingWritingExcel.Specs;
 
 public class TemporaryFile : IDisposable
 {

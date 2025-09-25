@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelImporterExporter", "ExcelImporterExporter\ExcelImporterExporter.csproj", "{9A6B4F17-BD0D-472C-8BC8-BB95009A3181}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelImporterExporter.Tests", "ExcelImporterExporter.Tests\ExcelImporterExporter.Tests.csproj", "{B863942B-E6A6-4BCC-8F86-096FF8BF22C5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelImporterExporter.Specs", "ExcelImporterExporter.Specs\ExcelImporterExporter.Specs.csproj", "{B863942B-E6A6-4BCC-8F86-096FF8BF22C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
