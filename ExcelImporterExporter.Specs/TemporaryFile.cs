@@ -5,14 +5,14 @@ namespace Evaluate.ReadingWritingExcel.Specs;
 
 public class TemporaryFile : IDisposable
 {
-    public TemporaryFile(string extension, bool autoOpen = false)
+    public TemporaryFile(string extension)
     {
-        AutoOpen = autoOpen;
         FullPath = $"{Path.GetTempFileName()}{extension}";
         File.Delete(FullPath);
     }
 
     public bool AutoOpen { get; set; }
+    public bool AutoDelete { get; set; } = true;
 
     public string FullPath { get; }
 
@@ -32,7 +32,7 @@ public class TemporaryFile : IDisposable
         {
             OpenFile(FullPath);
         }
-        else
+        else if (AutoDelete)
         {
             File.Delete(FullPath);
         }
