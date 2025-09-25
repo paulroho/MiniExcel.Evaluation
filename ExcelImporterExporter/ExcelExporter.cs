@@ -4,13 +4,8 @@ namespace Evaluate.ReadingWritingExcel;
 
 public class ExcelExporter
 {
-    public void WriteHello(string fileName)
+    public void Write(string fileName, Line[] lines)
     {
-        MiniExcel.SaveAs(fileName,
-            new[]
-            {
-                new { Name = "Name", Info = "Paul" },
-                new { Name = "City", Info = "Vienna" }
-            });
+        MiniExcel.SaveAs(fileName, lines);
     }
 }

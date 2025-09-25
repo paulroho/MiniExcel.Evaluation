@@ -10,7 +10,12 @@ public class ExcelExporterTests
         using var excelFile = new TemporaryFile(".xlsx");
         var exporter = new ExcelExporter();
 
-        exporter.WriteHello(excelFile.FullPath);
+        Line[] lines =
+        [
+            new() { Name = "Name", Info = "Paul" },
+            new() { Name = "City", Info = "Vienna" }
+        ];
+        exporter.Write(excelFile.FullPath, lines);
 
         var fileHasBeenWritten = excelFile.HasBeenWritten();
         fileHasBeenWritten.ShouldBeTrue();
