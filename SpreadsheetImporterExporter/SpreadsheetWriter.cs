@@ -2,7 +2,7 @@
 
 namespace Evaluate.ReadingWritingSpreadsheets;
 
-public class SpreadsheetExporter
+public class SpreadsheetWriter
 {
     public void Write(string fileName, IEnumerable<Line> lines)
     {

@@ -8,14 +8,14 @@ public class WritingSpreadsheetSpecs
     public void CanCreateSpreadsheet()
     {
         using var file = new TemporaryFile(".xlsx");
-        var exporter = new SpreadsheetExporter();
+        var writer = new SpreadsheetWriter();
 
         Line[] lines =
         [
             new() { Name = "Name", Info = "Paul" },
             new() { Name = "City", Info = "Vienna" }
         ];
-        exporter.Write(file.FullPath, lines);
+        writer.Write(file.FullPath, lines);
 
         var fileHasBeenWritten = file.HasBeenWritten();
         fileHasBeenWritten.ShouldBeTrue();

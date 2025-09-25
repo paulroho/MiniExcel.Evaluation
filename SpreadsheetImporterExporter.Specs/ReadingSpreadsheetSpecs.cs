@@ -13,10 +13,10 @@ public class ReadingSpreadsheetSpecs
             new() { Name = "Height", Info = "Pretty high" }
         ];
         using var file = CreateSpreadsheet(data);
-        var importer = new SpreadsheetImporter();
+        var reader = new SpreadsheetReader();
 
         // Act
-        var dataFromFile = importer.ImportSpreadsheet(file.FullPath);
+        var dataFromFile = reader.ReadSpreadsheet(file.FullPath);
 
         dataFromFile.ShouldBe(data);
     }
@@ -26,8 +26,8 @@ public class ReadingSpreadsheetSpecs
         var file = new TemporaryFile(".xlsx");
         file.AutoOpen = false;
 
-        var exporter = new SpreadsheetExporter();
-        exporter.Write(file.FullPath, lines);
+        var writer = new SpreadsheetWriter();
+        writer.Write(file.FullPath, lines);
 
         return file;
     }
