@@ -4,8 +4,8 @@
         <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>Evaluate.ReadingWritingExcel</RootNamespace>
-        <AssemblyName>PaulRoho.Evaluate.ReadingWritingExcel</AssemblyName>
+        <RootNamespace>Evaluate.ReadingWritingSpreadsheets</RootNamespace>
+        <AssemblyName>PaulRoho.Evaluate.ReadingWritingSpreadsheets</AssemblyName>
     </PropertyGroup>
 
     <ItemGroup>

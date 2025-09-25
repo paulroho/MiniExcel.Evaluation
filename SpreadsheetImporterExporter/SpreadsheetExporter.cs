@@ -1,8 +1,8 @@
 ﻿using MiniExcelLibs;
 
-namespace Evaluate.ReadingWritingExcel;
+namespace Evaluate.ReadingWritingSpreadsheets;
 
-public class ExcelExporter
+public class SpreadsheetExporter
 {
     public void Write(string fileName, IEnumerable<Line> lines)
     {

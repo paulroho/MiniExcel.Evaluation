@@ -1,4 +1,4 @@
-namespace Evaluate.ReadingWritingExcel;
+namespace Evaluate.ReadingWritingSpreadsheets;
 
 public record Line
 {
