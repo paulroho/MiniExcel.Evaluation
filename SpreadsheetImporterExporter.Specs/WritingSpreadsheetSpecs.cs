@@ -15,9 +15,10 @@ public class WritingSpreadsheetSpecs
             new() { Name = "Name", Info = "Paul" },
             new() { Name = "City", Info = "Vienna" }
         ];
-        writer.Write(file.FullPath, lines);
+        
+        // Act
+        writer.WriteSpreadsheet(file.FullPath, lines);
 
-        var fileHasBeenWritten = file.HasBeenWritten();
-        fileHasBeenWritten.ShouldBeTrue();
+        file.HasBeenWritten().ShouldBeTrue();
     }
 }

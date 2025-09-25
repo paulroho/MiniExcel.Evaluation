@@ -21,13 +21,13 @@ public class ReadingSpreadsheetSpecs
         dataFromFile.ShouldBe(data);
     }
 
-    private TemporaryFile CreateSpreadsheet(IEnumerable<Line> lines)
+    private static TemporaryFile CreateSpreadsheet(IEnumerable<Line> lines)
     {
         var file = new TemporaryFile(".xlsx");
         file.AutoOpen = false;
 
         var writer = new SpreadsheetWriter();
-        writer.Write(file.FullPath, lines);
+        writer.WriteSpreadsheet(file.FullPath, lines);
 
         return file;
     }
