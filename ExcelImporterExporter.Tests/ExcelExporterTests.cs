@@ -1,38 +1,18 @@
-﻿using System.Diagnostics;
-using Shouldly;
+﻿using Shouldly;
 
 namespace Evaluate.ReadingWritingExcel.Tests;
 
-public class ExcelExporterTests(ITestOutputHelper testOutputHelper)
+public class ExcelExporterTests
 {
     [Fact]
     public void CanCreateExcelFile()
     {
-        var excelFile = Path.GetTempFileName();
-        testOutputHelper.WriteLine($"Created temporary file: {excelFile}");
+        using var excelFile = new TemporaryFile(".xlsx");
         var exporter = new ExcelExporter();
 
-        exporter.WriteHello(excelFile);
+        exporter.WriteHello(excelFile.FullPath);
 
-        var fileHasBeenWritten = FileHasBeenWritten(excelFile);
+        var fileHasBeenWritten = excelFile.HasBeenWritten();
         fileHasBeenWritten.ShouldBeTrue();
-
-        Open(excelFile);
-    }
-
-    private static bool FileHasBeenWritten(string excelFile)
-        => new FileInfo(excelFile) is
-        {
-            Exists: false,
-            Length: > 0
-        };
-
-    private void Open(string path)
-    {
-        using var fileopener = new Process();
-
-        fileopener.StartInfo.FileName = "explorer";
-        fileopener.StartInfo.Arguments = $"\"{path}\"";
-        fileopener.Start();
     }
 }
