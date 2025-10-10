@@ -2,22 +2,19 @@
 
 namespace Evaluate.ReadingWritingSpreadsheets.Specs;
 
-public class WritingSpreadsheetSpecs
+public class WorkbookCreationSpecs
 {
     [Fact]
-    public void CanCreateSpreadsheet()
+    public void CanCreateWorkbook()
     {
-        using var file = new TemporaryFile(".xlsx");
-        var writer = new SpreadsheetWriter();
-
         Line[] lines =
         [
             new() { Name = "Name", Info = "Paul" },
             new() { Name = "City", Info = "Vienna" }
         ];
-        
+
         // Act
-        writer.WriteSpreadsheet(file.FullPath, lines);
+        using var file = lines.SaveAsWorkbook();
 
         file.HasBeenWritten().ShouldBeTrue();
     }

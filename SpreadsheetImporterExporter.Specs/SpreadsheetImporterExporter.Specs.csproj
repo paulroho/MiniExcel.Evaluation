@@ -38,4 +38,10 @@
       <ProjectReference Include="..\SpreadsheetImporterExporter\SpreadsheetImporterExporter.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Update="SampleFiles\FilledTemplate.xlsx">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
 </Project>

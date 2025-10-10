@@ -12,7 +12,7 @@ public class ReadingSpreadsheetSpecs
             new() { Name = "Name", Info = "It's me" },
             new() { Name = "Height", Info = "Pretty high" }
         ];
-        using var file = CreateSpreadsheet(data);
+        using var file = data.SaveAsWorkbook();
         var reader = new SpreadsheetReader();
 
         // Act
@@ -35,7 +35,7 @@ public class ReadingSpreadsheetSpecs
             { "My Sheet", data },
             { "Another Sheet", [] }
         };
-        using var file = CreateSpreadsheet(sheets);
+        using var file = sheets.SaveAsWorkbook();
 
         var reader = new SpreadsheetReader();
 
@@ -43,25 +43,5 @@ public class ReadingSpreadsheetSpecs
         var dataFromFile = reader.ReadSpreadsheet(file.FullPath, "My Sheet");
 
         dataFromFile.ShouldBe(data);
-    }
-
-    private static TemporaryFile CreateSpreadsheet(Dictionary<string, Line[]> sheets)
-    {
-        var file = new TemporaryFile(".xlsx");
-
-        var writer = new SpreadsheetWriter();
-        writer.WriteSpreadsheet(file.FullPath, sheets);
-
-        return file;
-    }
-
-    private static TemporaryFile CreateSpreadsheet(IEnumerable<Line> lines)
-    {
-        var file = new TemporaryFile(".xlsx");
-
-        var writer = new SpreadsheetWriter();
-        writer.WriteSpreadsheet(file.FullPath, lines);
-
-        return file;
     }
 }
