@@ -9,8 +9,12 @@ public class SpreadsheetWriter
         MiniExcel.SaveAs(fileName, lines);
     }
 
-    public void WriteSpreadsheet(string fileName, Dictionary<string, object> sheets)
+    public void WriteSpreadsheet(string fileName, Dictionary<string, Line[]> sheets)
     {
-        MiniExcel.SaveAs(fileName, sheets);
+        var sheetData = sheets.ToDictionary(
+            s => s.Key,
+             object (s) => s.Value
+        );
+        MiniExcel.SaveAs(fileName, sheetData);
     }
 }

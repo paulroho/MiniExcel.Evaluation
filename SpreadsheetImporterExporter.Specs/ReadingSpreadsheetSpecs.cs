@@ -29,11 +29,11 @@ public class ReadingSpreadsheetSpecs
             new() { Name = "Name", Info = "It's me" },
             new() { Name = "Height", Info = "Pretty high" }
         ];
-        var sheets = new Dictionary<string, object>
+        var sheets = new Dictionary<string, Line[]>
         {
-            { "Some Sheet", Array.Empty<Line>() },
+            { "Some Sheet", [] },
             { "My Sheet", data },
-            { "Another Sheet", Array.Empty<Line>() }
+            { "Another Sheet", [] }
         };
         using var file = CreateSpreadsheet(sheets);
 
@@ -45,7 +45,7 @@ public class ReadingSpreadsheetSpecs
         dataFromFile.ShouldBe(data);
     }
 
-    private static TemporaryFile CreateSpreadsheet(Dictionary<string, object> sheets)
+    private static TemporaryFile CreateSpreadsheet(Dictionary<string, Line[]> sheets)
     {
         var file = new TemporaryFile(".xlsx");
 
