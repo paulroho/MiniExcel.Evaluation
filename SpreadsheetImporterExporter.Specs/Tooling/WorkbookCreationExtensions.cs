@@ -1,6 +1,6 @@
 using MiniExcelLibs;
 
-namespace Evaluate.ReadingWritingSpreadsheets.Specs;
+namespace Evaluate.ReadingWritingSpreadsheets.Specs.Tooling;
 
 public static class WorkbookCreationExtensions
 {

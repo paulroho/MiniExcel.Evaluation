@@ -1,6 +1,6 @@
 ﻿using Shouldly;
 
-namespace Evaluate.ReadingWritingSpreadsheets.Specs;
+namespace Evaluate.ReadingWritingSpreadsheets.Specs.Tooling;
 
 public class WorkbookCreationSpecs
 {
