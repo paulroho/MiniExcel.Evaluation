@@ -45,4 +45,21 @@ public class ReadingSpreadsheetSpecs
 
         dataFromFile.ShouldBe(data);
     }
+
+    [Fact]
+    public void CanReadSpecificSpreadsheetStartingAtSpecificCell()
+    {
+        Line[] data =
+        [
+            new() { Name = "Name", Info = "Paul" },
+            new() { Name = "Country", Info = "Austria" },
+            new() { Name = "City", Info = "Vienna" },
+        ];
+        var reader = new SpreadsheetReader();
+
+        // Act
+        var dataFromFile = reader.ReadSpreadsheet("SampleFiles/TableFromMySheetB3.xlsx", "My Sheet", "B3");
+
+        dataFromFile.ShouldBe(data);
+    }
 }

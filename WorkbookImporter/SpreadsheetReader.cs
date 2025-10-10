@@ -10,9 +10,9 @@ public class SpreadsheetReader
         return stream.Query<Line>().ToList();
     }
 
-    public List<Line> ReadSpreadsheet(string fileName, string sheetName)
+    public List<Line> ReadSpreadsheet(string fileName, string sheetName, string startingCell = "A1")
     {
         using var stream = File.OpenRead(fileName);
-        return stream.Query<Line>(sheetName).ToList();
+        return stream.Query<Line>(sheetName, startCell: startingCell).ToList();
     }
 }
