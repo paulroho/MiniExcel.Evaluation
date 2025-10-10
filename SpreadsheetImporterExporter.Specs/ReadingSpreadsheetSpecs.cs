@@ -48,7 +48,6 @@ public class ReadingSpreadsheetSpecs
     private static TemporaryFile CreateSpreadsheet(Dictionary<string, object> sheets)
     {
         var file = new TemporaryFile(".xlsx");
-        file.AutoOpen = false;
 
         var writer = new SpreadsheetWriter();
         writer.WriteSpreadsheet(file.FullPath, sheets);
@@ -59,7 +58,6 @@ public class ReadingSpreadsheetSpecs
     private static TemporaryFile CreateSpreadsheet(IEnumerable<Line> lines)
     {
         var file = new TemporaryFile(".xlsx");
-        file.AutoOpen = false;
 
         var writer = new SpreadsheetWriter();
         writer.WriteSpreadsheet(file.FullPath, lines);
