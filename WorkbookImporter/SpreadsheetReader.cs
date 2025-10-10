@@ -1,6 +1,6 @@
 using MiniExcelLibs;
 
-namespace Evaluate.ReadingWritingSpreadsheets;
+namespace PaulRoho.Evaluate.ReadingWritingWorkbooks;
 
 public class SpreadsheetReader
 {

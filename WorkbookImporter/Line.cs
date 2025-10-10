@@ -1,4 +1,4 @@
-namespace Evaluate.ReadingWritingSpreadsheets;
+namespace PaulRoho.Evaluate.ReadingWritingWorkbooks;
 
 public record Line
 {

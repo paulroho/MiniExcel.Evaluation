@@ -1,7 +1,7 @@
-using Evaluate.ReadingWritingSpreadsheets.Specs.Tooling;
+using PaulRoho.Evaluate.ReadingWritingWorkbooks.Specs.Tooling;
 using Shouldly;
 
-namespace Evaluate.ReadingWritingSpreadsheets.Specs;
+namespace PaulRoho.Evaluate.ReadingWritingWorkbooks.Specs;
 
 public class ReadingSpreadsheetSpecs
 {

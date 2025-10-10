@@ -6,8 +6,8 @@
         <Nullable>enable</Nullable>
         <OutputType>Exe</OutputType>
         <IsPackable>false</IsPackable>
-        <RootNamespace>Evaluate.ReadingWritingSpreadsheets.Specs</RootNamespace>
-        <AssemblyName>PaulRoho.Evaluate.ReadingWritingSpreadsheets.Specs</AssemblyName>
+        <RootNamespace>PaulRoho.Evaluate.ReadingWritingWorkbooks.Specs</RootNamespace>
+        <AssemblyName>PaulRoho.Evaluate.ReadingWritingWorkbooks.Specs</AssemblyName>
 
         <!-- To enable Microsoft.Testing.Platform, uncomment the following line. -->
         <!-- <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner> -->
@@ -35,7 +35,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\SpreadsheetImporterExporter\SpreadsheetImporterExporter.csproj" />
+      <ProjectReference Include="..\WorkbookImporter\WorkbookImporter.csproj" />
     </ItemGroup>
 
     <ItemGroup>

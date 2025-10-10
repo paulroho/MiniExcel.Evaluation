@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpreadsheetImporterExporter", "SpreadsheetImporterExporter\SpreadsheetImporterExporter.csproj", "{9A6B4F17-BD0D-472C-8BC8-BB95009A3181}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkbookImporter", "WorkbookImporter\WorkbookImporter.csproj", "{9A6B4F17-BD0D-472C-8BC8-BB95009A3181}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpreadsheetImporterExporter.Specs", "SpreadsheetImporterExporter.Specs\SpreadsheetImporterExporter.Specs.csproj", "{B863942B-E6A6-4BCC-8F86-096FF8BF22C5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkbookImporter.Specs", "WorkbookImporter.Specs\WorkbookImporter.Specs.csproj", "{B863942B-E6A6-4BCC-8F86-096FF8BF22C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace Evaluate.ReadingWritingSpreadsheets.Specs.Tooling;
+namespace PaulRoho.Evaluate.ReadingWritingWorkbooks.Specs.Tooling;
 
 public class TemporaryFile : IDisposable
 {
