@@ -8,4 +8,9 @@ public class SpreadsheetWriter
     {
         MiniExcel.SaveAs(fileName, lines);
     }
+
+    public void WriteSpreadsheet(string fileName, Dictionary<string, object> sheets)
+    {
+        MiniExcel.SaveAs(fileName, sheets);
+    }
 }

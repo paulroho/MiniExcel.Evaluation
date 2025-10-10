@@ -9,4 +9,10 @@ public class SpreadsheetReader
         using var stream = File.OpenRead(fileName);
         return stream.Query<Line>().ToList();
     }
+
+    public List<Line> ReadSpreadsheet(string fileName, string sheetName)
+    {
+        using var stream = File.OpenRead(fileName);
+        return stream.Query<Line>(sheetName).ToList();
+    }
 }
