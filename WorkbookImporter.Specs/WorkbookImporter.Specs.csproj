@@ -45,6 +45,9 @@
       <None Update="SampleFiles\TableFromMySheetB3.xlsx">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="SampleFiles\TableWithDecimals_ImportantSheet_B10.xlsx">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

@@ -1,3 +1,4 @@
+using MiniExcelLibs.Attributes;
 using PaulRoho.Evaluate.ReadingWritingWorkbooks.Specs.Tooling;
 using Shouldly;
 
@@ -41,7 +42,7 @@ public class ReadingSpreadsheetSpecs
         var reader = new SpreadsheetReader();
 
         // Act
-        var dataFromFile = reader.ReadSpreadsheet(file.FullPath, "My Sheet");
+        var dataFromFile = reader.ReadSpreadsheet<Line>(file.FullPath, "My Sheet");
 
         dataFromFile.ShouldBe(data);
     }
@@ -58,8 +59,32 @@ public class ReadingSpreadsheetSpecs
         var reader = new SpreadsheetReader();
 
         // Act
-        var dataFromFile = reader.ReadSpreadsheet("SampleFiles/TableFromMySheetB3.xlsx", "My Sheet", "B3");
+        var dataFromFile = reader.ReadSpreadsheet<Line>("SampleFiles/TableFromMySheetB3.xlsx", "My Sheet", "B3");
 
         dataFromFile.ShouldBe(data);
+    }
+
+    private record KeyValue
+    {
+        [ExcelColumnName("The Key")] public string Key { get; init; }
+        [ExcelColumnName("The Value")] public decimal Value { get; init; }
+    }
+
+    [Fact]
+    public void CanReadDecimalValues()
+    {
+        var reader = new SpreadsheetReader();
+
+        // Act
+        var dataFromFile = reader.ReadSpreadsheet<KeyValue>(
+            "SampleFiles/TableWithDecimals_ImportantSheet_B10.xlsx", 
+            "Important Sheet", 
+            "B10");
+
+        dataFromFile.ShouldBe((KeyValue[])[
+            new() { Key = "Key A.1", Value = 1.1m },
+            new() { Key = "Key A.2", Value = 22.22m },
+            new() { Key = "Key A.3", Value = 333.333m },
+        ]);
     }
 }
