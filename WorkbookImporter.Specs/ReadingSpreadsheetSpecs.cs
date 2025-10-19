@@ -47,8 +47,10 @@ public class ReadingSpreadsheetSpecs
         dataFromFile.ShouldBe(data);
     }
 
-    [Fact]
-    public void CanReadSpecificSpreadsheetStartingAtSpecificCell()
+    [Theory]
+    [InlineData("SampleFiles/TableFromMySheetB3.xlsx")]
+    [InlineData("SampleFiles/TableFromMySheetB3_WithFrame.xlsx")]
+    public void CanReadSpecificSpreadsheetStartingAtSpecificCell(string fileName)
     {
         Line[] data =
         [
@@ -59,7 +61,7 @@ public class ReadingSpreadsheetSpecs
         var reader = new SpreadsheetReader();
 
         // Act
-        var dataFromFile = reader.ReadSpreadsheet<Line>("SampleFiles/TableFromMySheetB3.xlsx", "My Sheet", "B3");
+        var dataFromFile = reader.ReadSpreadsheet<Line>(fileName, "My Sheet", "B3");
 
         dataFromFile.ShouldBe(data);
     }

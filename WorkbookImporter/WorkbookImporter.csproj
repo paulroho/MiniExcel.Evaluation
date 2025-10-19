@@ -9,7 +9,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="MiniExcel" Version="1.41.4" />
+      <Reference Include="MiniExcel">
+        <HintPath>MiniExcelCustomBuild\MiniExcel.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>
