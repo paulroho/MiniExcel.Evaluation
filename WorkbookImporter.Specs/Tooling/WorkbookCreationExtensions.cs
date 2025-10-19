@@ -1,10 +1,11 @@
+using System.Collections;
 using MiniExcelLibs;
 
 namespace PaulRoho.Evaluate.ReadingWritingWorkbooks.Specs.Tooling;
 
 public static class WorkbookCreationExtensions
 {
-    public static TemporaryFile SaveAsWorkbook(this Dictionary<string, Line[]> sheets)
+    public static TemporaryFile SaveAsWorkbook(this Dictionary<string, object[]> sheets)
     {
         var file = new TemporaryFile(".xlsx");
 
@@ -17,7 +18,7 @@ public static class WorkbookCreationExtensions
         return file;
     }
 
-    public static TemporaryFile SaveAsWorkbook(this IEnumerable<Line> lines)
+    public static TemporaryFile SaveAsWorkbook(this IEnumerable lines)
     {
         var file = new TemporaryFile(".xlsx");
 

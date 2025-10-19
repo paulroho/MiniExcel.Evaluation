@@ -6,6 +6,12 @@ namespace PaulRoho.Evaluate.ReadingWritingWorkbooks.Specs;
 
 public class ReadingSpreadsheetSpecs
 {
+    private record Line
+    {
+        public string Name { get; init; }
+        public string Info { get; init; }
+    }
+    
     [Fact]
     public void CanReadSpreadsheet()
     {
@@ -18,7 +24,7 @@ public class ReadingSpreadsheetSpecs
         var reader = new SpreadsheetReader();
 
         // Act
-        var dataFromFile = reader.ReadSpreadsheet(file.FullPath);
+        var dataFromFile = reader.ReadSpreadsheet<Line>(file.FullPath);
 
         dataFromFile.ShouldBe(data);
     }
@@ -31,7 +37,7 @@ public class ReadingSpreadsheetSpecs
             new() { Name = "Name", Info = "It's me" },
             new() { Name = "Height", Info = "Pretty high" }
         ];
-        var sheets = new Dictionary<string, Line[]>
+        var sheets = new Dictionary<string, object[]>
         {
             { "Some Sheet", [] },
             { "My Sheet", data },

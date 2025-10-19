@@ -4,10 +4,11 @@ namespace PaulRoho.Evaluate.ReadingWritingWorkbooks;
 
 public class SpreadsheetReader
 {
-    public List<Line> ReadSpreadsheet(string fileName)
+    public List<T> ReadSpreadsheet<T>(string fileName) 
+        where T : class, new()
     {
         using var stream = File.OpenRead(fileName);
-        return stream.Query<Line>().ToList();
+        return stream.Query<T>().ToList();
     }
 
     public List<T> ReadSpreadsheet<T>(string fileName, string sheetName, string startingCell = "A1") 

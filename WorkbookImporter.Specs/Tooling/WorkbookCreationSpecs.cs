@@ -7,10 +7,10 @@ public class WorkbookCreationSpecs
     [Fact]
     public void CanCreateWorkbook()
     {
-        Line[] lines =
+        object[] lines =
         [
-            new() { Name = "Name", Info = "Paul" },
-            new() { Name = "City", Info = "Vienna" }
+            new { Name = "Name", Info = "Paul" },
+            new { Name = "City", Info = "Vienna" }
         ];
 
         // Act
