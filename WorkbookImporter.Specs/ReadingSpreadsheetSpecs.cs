@@ -6,11 +6,13 @@ namespace PaulRoho.Evaluate.ReadingWritingWorkbooks.Specs;
 
 public class ReadingSpreadsheetSpecs
 {
+    // ReSharper disable UnusedAutoPropertyAccessor.Local
     private record Line
     {
-        public string Name { get; init; }
-        public string Info { get; init; }
+        public string Name { get; init; } = string.Empty;
+        public string Info { get; init; } = string.Empty;
     }
+    // ReSharper restore UnusedAutoPropertyAccessor.Local
     
     [Fact]
     public void CanReadSpreadsheet()
@@ -32,10 +34,10 @@ public class ReadingSpreadsheetSpecs
     [Fact]
     public void CanReadSpecificSpreadsheet()
     {
-        Line[] data =
+        object[] data =
         [
-            new() { Name = "Name", Info = "It's me" },
-            new() { Name = "Height", Info = "Pretty high" }
+            new Line { Name = "Name", Info = "It's me" },
+            new Line { Name = "Height", Info = "Pretty high" }
         ];
         var sheets = new Dictionary<string, object[]>
         {
@@ -72,11 +74,13 @@ public class ReadingSpreadsheetSpecs
         dataFromFile.ShouldBe(data);
     }
 
+    // ReSharper disable UnusedAutoPropertyAccessor.Local
     private record KeyValue
     {
-        [ExcelColumnName("The Key")] public string Key { get; init; }
+        [ExcelColumnName("The Key")] public string Key { get; init; } = string.Empty;
         [ExcelColumnName("The Value")] public decimal Value { get; init; }
     }
+    // ReSharper restore UnusedAutoPropertyAccessor.Local
 
     [Fact]
     public void CanReadDecimalValues()
