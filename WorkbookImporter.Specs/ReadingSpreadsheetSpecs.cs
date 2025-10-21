@@ -6,6 +6,13 @@ namespace PaulRoho.Evaluate.ReadingWritingWorkbooks.Specs;
 
 public class ReadingSpreadsheetSpecs
 {
+    private readonly SpreadsheetReader _reader;
+
+    public ReadingSpreadsheetSpecs()
+    {
+        _reader = new SpreadsheetReader();
+    }
+
     // ReSharper disable UnusedAutoPropertyAccessor.Local
     private record Line : SpreadsheetReader.IRowMarker
     {
@@ -14,7 +21,7 @@ public class ReadingSpreadsheetSpecs
         public bool IsProcessable => !string.IsNullOrWhiteSpace(Name);
     }
     // ReSharper restore UnusedAutoPropertyAccessor.Local
-    
+
     [Fact]
     public void CanReadSpreadsheet()
     {
@@ -24,10 +31,9 @@ public class ReadingSpreadsheetSpecs
             new() { Name = "Height", Info = "Pretty high" }
         ];
         using var file = data.SaveAsWorkbook();
-        var reader = new SpreadsheetReader();
 
         // Act
-        var dataFromFile = reader.ReadSpreadsheet<Line>(file.FullPath);
+        var dataFromFile = _reader.ReadSpreadsheet<Line>(file.FullPath);
 
         dataFromFile.ShouldBe(data);
     }
@@ -48,10 +54,8 @@ public class ReadingSpreadsheetSpecs
         };
         using var file = sheets.SaveAsWorkbook();
 
-        var reader = new SpreadsheetReader();
-
         // Act
-        var dataFromFile = reader.ReadSpreadsheet<Line>(file.FullPath, "My Sheet");
+        var dataFromFile = _reader.ReadSpreadsheet<Line>(file.FullPath, "My Sheet");
 
         dataFromFile.ShouldBe(data);
     }
@@ -67,10 +71,9 @@ public class ReadingSpreadsheetSpecs
             new() { Name = "Country", Info = "Austria" },
             new() { Name = "City", Info = "Vienna" },
         ];
-        var reader = new SpreadsheetReader();
 
         // Act
-        var dataFromFile = reader.ReadSpreadsheet<Line>(fileName, "My Sheet", "B3");
+        var dataFromFile = _reader.ReadSpreadsheet<Line>(fileName, "My Sheet", "B3");
 
         dataFromFile.ShouldBe(data);
     }
@@ -87,15 +90,14 @@ public class ReadingSpreadsheetSpecs
     [Fact]
     public void CanReadDecimalValues()
     {
-        var reader = new SpreadsheetReader();
-
         // Act
-        var dataFromFile = reader.ReadSpreadsheet<KeyValue>(
-            "SampleFiles/TableWithDecimals_ImportantSheet_B10.xlsx", 
-            "Important Sheet", 
+        var dataFromFile = _reader.ReadSpreadsheet<KeyValue>(
+            "SampleFiles/TableWithDecimals_ImportantSheet_B10.xlsx",
+            "Important Sheet",
             "B10");
 
-        dataFromFile.ShouldBe((KeyValue[])[
+        dataFromFile.ShouldBe((KeyValue[])
+        [
             new() { Key = "Key A.1", Value = 1.1m },
             new() { Key = "Key A.2", Value = 22.22m },
             new() { Key = "Key A.3", Value = 333.333m },
@@ -105,15 +107,14 @@ public class ReadingSpreadsheetSpecs
     [Fact]
     public void CanReadFromFilledSimpleTemplate()
     {
-        var reader = new SpreadsheetReader();
-
         // Act
-        var dataFromFile = reader.ReadSpreadsheet<KeyValue>(
-            "SampleFiles/SimpleTemplateFilled.xlsx", 
-            "Important Sheet", 
+        var dataFromFile = _reader.ReadSpreadsheet<KeyValue>(
+            "SampleFiles/SimpleTemplateFilled.xlsx",
+            "Important Sheet",
             "B10");
 
-        dataFromFile.ShouldBe((KeyValue[])[
+        dataFromFile.ShouldBe((KeyValue[])
+        [
             new() { Key = "Key A.1", Value = 1.1m },
             new() { Key = "Key A.2", Value = 22.22m },
             new() { Key = "Key A.3", Value = 333.333m },
