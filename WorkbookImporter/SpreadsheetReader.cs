@@ -32,6 +32,18 @@ public class SpreadsheetReader
             .ToList();
     }
 
+    public List<T> ReadSpreadsheet<T>(string fileName, string sheetName, string startingCell,
+        Expression<Func<T, string>> mergedValueSelector,
+        Expression<Func<T, string>> mergedSubValueSelector)
+        where T : class, IRowMarker, IWithMergedCell<T>, IWithMergedSubCell<T>, new()
+    {
+        using var stream = File.OpenRead(fileName);
+        return stream.Query<T>(sheetName, startCell: startingCell)
+            .TakeWhile(row => row.IsProcessable)
+            .UnrollDoubleMergedCell(mergedValueSelector, mergedSubValueSelector)
+            .ToList();
+    }
+
 
     public interface IRowMarker
     {
@@ -41,5 +53,9 @@ public class SpreadsheetReader
     public interface IWithMergedCell<out T>
     {
         T WithMergedCellValue(string value);
+    }
+    public interface IWithMergedSubCell<out T>
+    {
+        T WithMergedSubCellValue(string value);
     }
 }
