@@ -7,10 +7,11 @@ namespace PaulRoho.Evaluate.ReadingWritingWorkbooks.Specs;
 public class ReadingSpreadsheetSpecs
 {
     // ReSharper disable UnusedAutoPropertyAccessor.Local
-    private record Line
+    private record Line : SpreadsheetReader.IRowMarker
     {
         public string Name { get; init; } = string.Empty;
         public string Info { get; init; } = string.Empty;
+        public string? Marker => Name;
     }
     // ReSharper restore UnusedAutoPropertyAccessor.Local
     
@@ -75,10 +76,11 @@ public class ReadingSpreadsheetSpecs
     }
 
     // ReSharper disable UnusedAutoPropertyAccessor.Local
-    private record KeyValue
+    private record KeyValue : SpreadsheetReader.IRowMarker
     {
         [ExcelColumnName("The Key")] public string Key { get; init; } = string.Empty;
         [ExcelColumnName("The Value")] public decimal Value { get; init; }
+        public string? Marker => Key;
     }
     // ReSharper restore UnusedAutoPropertyAccessor.Local
 
@@ -90,6 +92,24 @@ public class ReadingSpreadsheetSpecs
         // Act
         var dataFromFile = reader.ReadSpreadsheet<KeyValue>(
             "SampleFiles/TableWithDecimals_ImportantSheet_B10.xlsx", 
+            "Important Sheet", 
+            "B10");
+
+        dataFromFile.ShouldBe((KeyValue[])[
+            new() { Key = "Key A.1", Value = 1.1m },
+            new() { Key = "Key A.2", Value = 22.22m },
+            new() { Key = "Key A.3", Value = 333.333m },
+        ]);
+    }
+
+    [Fact]
+    public void CanReadFromFilledTemplate()
+    {
+        var reader = new SpreadsheetReader();
+
+        // Act
+        var dataFromFile = reader.ReadSpreadsheet<KeyValue>(
+            "SampleFiles/FilledTemplate.xlsx", 
             "Important Sheet", 
             "B10");
 

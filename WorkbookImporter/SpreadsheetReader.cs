@@ -12,9 +12,16 @@ public class SpreadsheetReader
     }
 
     public List<T> ReadSpreadsheet<T>(string fileName, string sheetName, string startingCell = "A1") 
-        where T : class, new()
+        where T : class, IRowMarker, new()
     {
         using var stream = File.OpenRead(fileName);
-        return stream.Query<T>(sheetName, startCell: startingCell).ToList();
+        return stream.Query<T>(sheetName, startCell: startingCell)
+            .TakeWhile(row => !string.IsNullOrWhiteSpace(row.Marker))
+            .ToList();
+    }
+
+    public interface IRowMarker
+    {
+        string? Marker { get; }
     }
 }
