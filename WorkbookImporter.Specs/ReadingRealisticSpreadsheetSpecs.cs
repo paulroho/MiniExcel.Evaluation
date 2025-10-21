@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using MiniExcelLibs.Attributes;
 using Shouldly;
 
@@ -14,7 +13,7 @@ public class ReadingRealisticSpreadsheetSpecs
     }
 
     // ReSharper disable UnusedAutoPropertyAccessor.Local
-    private record RealisticRow : SpreadsheetReader.IRowMarker, IWithMergedCell<RealisticRow>
+    private record RealisticRow : SpreadsheetReader.IRowMarker, SpreadsheetReader.IWithMergedCell<RealisticRow>
     {
         [ExcelColumnName("Group")] public string Group { get; init; } = string.Empty;
         [ExcelColumnName("")] public string Part { get; init; } = string.Empty;
@@ -34,8 +33,8 @@ public class ReadingRealisticSpreadsheetSpecs
         var dataFromFile = _reader.ReadSpreadsheet<RealisticRow>(
             "SampleFiles/RealisticTemplateFilled.xlsx",
             "Important Sheet",
-            "B12");
-        dataFromFile = UnrollMergedCell(dataFromFile, g => g.Group).ToList();
+            "B12",
+            row => row.Group);
 
         dataFromFile.Count.ShouldBe(3);
 
@@ -64,31 +63,4 @@ public class ReadingRealisticSpreadsheetSpecs
             Value = 3.333m
         });
     }
-
-    private static IEnumerable<T> UnrollMergedCell<T>(
-        IEnumerable<T> originalData,
-        Expression<Func<T, string>> mergedValueSelector)
-        where T : IWithMergedCell<T>
-    {
-        var getMergedValue = mergedValueSelector.Compile();
-        var lastValue = string.Empty;
-        foreach (var row in originalData)
-        {
-            var mergedValue = getMergedValue(row);
-            if (!string.IsNullOrEmpty(mergedValue))
-            {
-                lastValue = mergedValue;
-                yield return row;
-            }
-            else
-            {
-                yield return row.WithMergedCellValue(lastValue);
-            }
-        }
-    }
-}
-
-internal interface IWithMergedCell<out T>
-{
-    T WithMergedCellValue(string value);
 }
