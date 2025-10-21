@@ -40,7 +40,7 @@ public class SpreadsheetReader
         using var stream = File.OpenRead(fileName);
         return stream.Query<T>(sheetName, startCell: startingCell)
             .TakeWhile(row => row.IsProcessable)
-            .UnrollDoubleMergedCell(mergedValueSelector, mergedSubValueSelector)
+            .UnrollHierarchiclyMergedCells(mergedValueSelector, mergedSubValueSelector)
             .ToList();
     }
 
