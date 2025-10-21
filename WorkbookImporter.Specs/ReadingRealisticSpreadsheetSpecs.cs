@@ -31,6 +31,7 @@ public class ReadingRealisticSpreadsheetSpecs
             "SampleFiles/RealisticTemplateFilled.xlsx",
             "Important Sheet",
             "B12");
+        dataFromFile = FillFromMergedCell(dataFromFile);
 
         dataFromFile.Count.ShouldBe(3);
 
@@ -44,7 +45,7 @@ public class ReadingRealisticSpreadsheetSpecs
         });
         dataFromFile[1].ShouldBeEquivalentTo(new RealisticRow
         {
-            Group = "",
+            Group = "Group A.a",
             Part = "",
             Text = "Text A.2",
             Key = "A_a_A2",
@@ -58,5 +59,24 @@ public class ReadingRealisticSpreadsheetSpecs
             Key = "A_b_A3",
             Value = 3.333m
         });
+    }
+
+    private List<RealisticRow> FillFromMergedCell(List<RealisticRow> originalData)
+    {
+        var lastGroup = string.Empty;
+        var output = new List<RealisticRow>();
+        foreach (var row in originalData)
+        {
+            if (!string.IsNullOrEmpty(row.Group))
+            {
+                lastGroup = row.Group;
+                output.Add(row);
+            }
+            else
+            {
+                output.Add(row with { Group = lastGroup });
+            }
+        }
+        return output;
     }
 }
