@@ -35,7 +35,7 @@ public class ReadingRealisticSpreadsheetSpecs
             "SampleFiles/RealisticTemplateFilled.xlsx",
             "Important Sheet",
             "B12");
-        dataFromFile = FillFromMergedCell(dataFromFile, g => g.Group).ToList();
+        dataFromFile = UnrollMergedCell(dataFromFile, g => g.Group).ToList();
 
         dataFromFile.Count.ShouldBe(3);
 
@@ -65,7 +65,7 @@ public class ReadingRealisticSpreadsheetSpecs
         });
     }
 
-    private static IEnumerable<T> FillFromMergedCell<T>(
+    private static IEnumerable<T> UnrollMergedCell<T>(
         IEnumerable<T> originalData,
         Expression<Func<T, string>> mergedValueSelector)
         where T : IWithMergedCell<T>
@@ -88,7 +88,7 @@ public class ReadingRealisticSpreadsheetSpecs
     }
 }
 
-internal interface IWithMergedCell<T>
+internal interface IWithMergedCell<out T>
 {
     T WithMergedCellValue(string value);
 }
