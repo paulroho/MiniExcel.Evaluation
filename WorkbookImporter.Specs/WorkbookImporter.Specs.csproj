@@ -39,7 +39,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="SampleFiles\FilledTemplate.xlsx">
+      <None Update="SampleFiles\SimpleTemplateFilled.xlsx">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="SampleFiles\TableFromMySheetB3.xlsx">

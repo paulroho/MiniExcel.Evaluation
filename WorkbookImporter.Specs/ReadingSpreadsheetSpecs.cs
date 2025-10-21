@@ -103,13 +103,13 @@ public class ReadingSpreadsheetSpecs
     }
 
     [Fact]
-    public void CanReadFromFilledTemplate()
+    public void CanReadFromFilledSimpleTemplate()
     {
         var reader = new SpreadsheetReader();
 
         // Act
         var dataFromFile = reader.ReadSpreadsheet<KeyValue>(
-            "SampleFiles/FilledTemplate.xlsx", 
+            "SampleFiles/SimpleTemplateFilled.xlsx", 
             "Important Sheet", 
             "B10");
 
