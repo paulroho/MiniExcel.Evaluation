@@ -12,6 +12,7 @@ public class ReadingRealisticSpreadsheetSpecs
         _reader = new SpreadsheetReader();
     }
 
+    // ReSharper disable UnusedAutoPropertyAccessor.Local
     private record RealisticRow : SpreadsheetReader.IRowMarker
     {
         [ExcelColumnName("Group")] public string Group { get; init; } = string.Empty;
@@ -22,6 +23,7 @@ public class ReadingRealisticSpreadsheetSpecs
 
         public bool IsProcessable => !string.IsNullOrWhiteSpace(Text);
     }
+    // ReSharper restore UnusedAutoPropertyAccessor.Local
 
     [Fact]
     public void CanReadDataWithGrouping()
@@ -31,7 +33,7 @@ public class ReadingRealisticSpreadsheetSpecs
             "SampleFiles/RealisticTemplateFilled.xlsx",
             "Important Sheet",
             "B12");
-        dataFromFile = FillFromMergedCell(dataFromFile);
+        dataFromFile = FillFromMergedGroup(dataFromFile).ToList();
 
         dataFromFile.Count.ShouldBe(3);
 
@@ -61,22 +63,23 @@ public class ReadingRealisticSpreadsheetSpecs
         });
     }
 
-    private List<RealisticRow> FillFromMergedCell(List<RealisticRow> originalData)
+    private static IEnumerable<RealisticRow> FillFromMergedGroup(IEnumerable<RealisticRow> originalData)
     {
         var lastGroup = string.Empty;
-        var output = new List<RealisticRow>();
         foreach (var row in originalData)
         {
             if (!string.IsNullOrEmpty(row.Group))
             {
                 lastGroup = row.Group;
-                output.Add(row);
+                yield return row;
             }
             else
             {
-                output.Add(row with { Group = lastGroup });
+                yield return row with
+                {
+                    Group = lastGroup
+                };
             }
         }
-        return output;
     }
 }
