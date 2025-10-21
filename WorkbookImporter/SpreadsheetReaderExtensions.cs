@@ -6,10 +6,10 @@ internal static class SpreadsheetReaderExtensions
 {
     public static IEnumerable<T> UnrollMergedCell<T>(
         this IEnumerable<T> originalData,
-        Expression<Func<T, string>> mergedValueSelector)
+        Expression<Func<T, string>> mergedCellSelector)
         where T : SpreadsheetReader.IWithMergedCell<T>
     {
-        var getMergedValue = mergedValueSelector.Compile();
+        var getMergedValue = mergedCellSelector.Compile();
         var lastValue = string.Empty;
         foreach (var row in originalData)
         {
