@@ -11,7 +11,7 @@ public class ReadingSpreadsheetSpecs
     {
         public string Name { get; init; } = string.Empty;
         public string Info { get; init; } = string.Empty;
-        public string? Marker => Name;
+        public bool IsProcessable => !string.IsNullOrWhiteSpace(Name);
     }
     // ReSharper restore UnusedAutoPropertyAccessor.Local
     
@@ -80,7 +80,7 @@ public class ReadingSpreadsheetSpecs
     {
         [ExcelColumnName("The Key")] public string Key { get; init; } = string.Empty;
         [ExcelColumnName("The Value")] public decimal Value { get; init; }
-        public string? Marker => Key;
+        public bool IsProcessable => !string.IsNullOrWhiteSpace(Key);
     }
     // ReSharper restore UnusedAutoPropertyAccessor.Local
 

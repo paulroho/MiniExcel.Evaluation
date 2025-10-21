@@ -16,12 +16,12 @@ public class SpreadsheetReader
     {
         using var stream = File.OpenRead(fileName);
         return stream.Query<T>(sheetName, startCell: startingCell)
-            .TakeWhile(row => !string.IsNullOrWhiteSpace(row.Marker))
+            .TakeWhile(row => row.IsProcessable)
             .ToList();
     }
 
     public interface IRowMarker
     {
-        string? Marker { get; }
+        bool IsProcessable { get; }
     }
 }
