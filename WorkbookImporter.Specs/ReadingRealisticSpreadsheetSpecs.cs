@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using MiniExcelLibs.Attributes;
 using Shouldly;
 
@@ -13,7 +14,7 @@ public class ReadingRealisticSpreadsheetSpecs
     }
 
     // ReSharper disable UnusedAutoPropertyAccessor.Local
-    private record RealisticRow : SpreadsheetReader.IRowMarker
+    private record RealisticRow : SpreadsheetReader.IRowMarker, IWithMergedCell<RealisticRow>
     {
         [ExcelColumnName("Group")] public string Group { get; init; } = string.Empty;
         [ExcelColumnName("")] public string Part { get; init; } = string.Empty;
@@ -22,6 +23,7 @@ public class ReadingRealisticSpreadsheetSpecs
         [ExcelColumnName("The Value")] public decimal Value { get; init; }
 
         public bool IsProcessable => !string.IsNullOrWhiteSpace(Text);
+        public RealisticRow WithMergedCellValue(string value) => this with { Group = value };
     }
     // ReSharper restore UnusedAutoPropertyAccessor.Local
 
@@ -33,7 +35,7 @@ public class ReadingRealisticSpreadsheetSpecs
             "SampleFiles/RealisticTemplateFilled.xlsx",
             "Important Sheet",
             "B12");
-        dataFromFile = FillFromMergedGroup(dataFromFile).ToList();
+        dataFromFile = FillFromMergedCell(dataFromFile, g => g.Group).ToList();
 
         dataFromFile.Count.ShouldBe(3);
 
@@ -63,23 +65,30 @@ public class ReadingRealisticSpreadsheetSpecs
         });
     }
 
-    private static IEnumerable<RealisticRow> FillFromMergedGroup(IEnumerable<RealisticRow> originalData)
+    private static IEnumerable<T> FillFromMergedCell<T>(
+        IEnumerable<T> originalData,
+        Expression<Func<T, string>> mergedValueSelector)
+        where T : IWithMergedCell<T>
     {
-        var lastGroup = string.Empty;
+        var getMergedValue = mergedValueSelector.Compile();
+        var lastValue = string.Empty;
         foreach (var row in originalData)
         {
-            if (!string.IsNullOrEmpty(row.Group))
+            var mergedValue = getMergedValue(row);
+            if (!string.IsNullOrEmpty(mergedValue))
             {
-                lastGroup = row.Group;
+                lastValue = mergedValue;
                 yield return row;
             }
             else
             {
-                yield return row with
-                {
-                    Group = lastGroup
-                };
+                yield return row.WithMergedCellValue(lastValue);
             }
         }
     }
+}
+
+internal interface IWithMergedCell<T>
+{
+    T WithMergedCellValue(string value);
 }
