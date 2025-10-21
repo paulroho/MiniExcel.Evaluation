@@ -51,6 +51,9 @@
       <None Update="SampleFiles\TableFromMySheetB3_WithFrame.xlsx">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="SampleFiles\RealisticTemplateFilled.xlsx">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
