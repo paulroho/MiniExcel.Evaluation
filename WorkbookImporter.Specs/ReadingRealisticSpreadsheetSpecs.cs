@@ -13,7 +13,9 @@ public class ReadingRealisticSpreadsheetSpecs
     }
 
     // ReSharper disable UnusedAutoPropertyAccessor.Local
-    private record RealisticRow : SpreadsheetReader.IRowMarker, SpreadsheetReader.IWithMergedCell<RealisticRow>, SpreadsheetReader.IWithMergedSubCell<RealisticRow>
+    private record RealisticRow : SpreadsheetReader.IRowMarker, 
+        SpreadsheetReader.IWithMergedCell<RealisticRow>,
+        SpreadsheetReader.IWithMergedSubCell<RealisticRow>
     {
         [ExcelColumnName("Group")] public string Group { get; init; } = string.Empty;
         [ExcelColumnName("")] public string Part { get; init; } = string.Empty;
