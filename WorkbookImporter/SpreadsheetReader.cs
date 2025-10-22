@@ -40,7 +40,7 @@ public class SpreadsheetReader
         using var stream = File.OpenRead(fileName);
         return stream.Query<T>(sheetName, startCell: startingCell)
             .TakeWhile(row => row.IsProcessable)
-            .UnrollHierarchiclyMergedCells(mergedValueSelector, mergedSubValueSelector)
+            .UnrollHierarchicallyMergedCells(mergedValueSelector, mergedSubValueSelector)
             .ToList();
     }
 
@@ -54,6 +54,7 @@ public class SpreadsheetReader
     {
         T WithMergedCellValue(string value);
     }
+
     public interface IWithMergedSubCell<out T>
     {
         T WithMergedSubCellValue(string value);

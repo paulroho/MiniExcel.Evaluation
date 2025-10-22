@@ -15,63 +15,61 @@ internal static class MergedCellUnrollExtensions
 
         foreach (var row in originalData)
         {
-            var (rowWithProperGroup, lastVal) = row.WithValueForMergedCell(getMergedValue, lastValue);
+            var rowToYield = row.ProcessMergedCell(getMergedValue, lastValue,
+                (r, v) => r.WithMergedCellValue(v), out var updatedValue);
 
-            lastValue = lastVal;
+            lastValue = updatedValue;
 
-            yield return rowWithProperGroup;
+            yield return rowToYield;
         }
     }
 
-    public static IEnumerable<T> UnrollHierarchiclyMergedCells<T>(
+    public static IEnumerable<T> UnrollHierarchicallyMergedCells<T>(
         this IEnumerable<T> originalData,
         Expression<Func<T, string>> mergedCellSelector,
         Expression<Func<T, string>> mergedSubCellSelector)
         where T : SpreadsheetReader.IWithMergedCell<T>, SpreadsheetReader.IWithMergedSubCell<T>
     {
-        var getMergedValue = mergedCellSelector.Compile();
+        var getMergedMainValue = mergedCellSelector.Compile();
         var getMergedSubValue = mergedSubCellSelector.Compile();
 
-        var lastValue = string.Empty;
+        var lastMainValue = string.Empty;
         var lastSubValue = string.Empty;
-        var previousValue = string.Empty;
+        var previousMainValue = string.Empty;
 
         foreach (var row in originalData)
         {
-            var (rowWithProperGroup, lastVal) = row.WithValueForMergedCell(getMergedValue, lastValue);
+            var rowWithMainValue = row.ProcessMergedCell(getMergedMainValue, lastMainValue,
+                (r, v) => r.WithMergedCellValue(v), out var updatedMainValue);
 
-            if (getMergedValue(rowWithProperGroup) != previousValue)
+            if (updatedMainValue != previousMainValue)
             {
                 lastSubValue = string.Empty;
             }
 
-            var (rowToReturn, lastSubVal) =
-                rowWithProperGroup.WithValueForMergedSubCell(getMergedSubValue, lastSubValue);
+            var rowToYield = rowWithMainValue.ProcessMergedCell(getMergedSubValue, lastSubValue,
+                (r, v) => r.WithMergedSubCellValue(v), out var updatedSubValue);
 
-            lastValue = lastVal;
-            lastSubValue = lastSubVal;
-            previousValue = lastValue;
+            lastMainValue = updatedMainValue;
+            lastSubValue = updatedSubValue;
+            previousMainValue = updatedMainValue;
 
-            yield return rowToReturn;
+            yield return rowToYield;
         }
     }
 
-    private static (T, string) WithValueForMergedCell<T>(this T row, Func<T, string> getMergedValue, string lastValue)
-        where T : SpreadsheetReader.IWithMergedCell<T>
+    private static T ProcessMergedCell<T>(this T row, Func<T, string> getCurrentValue, string fallbackValue,
+        Func<T, string, T> withValueFunc, out string updatedValue)
     {
-        var mergedValue = getMergedValue(row);
-        return !string.IsNullOrEmpty(mergedValue)
-            ? (row, mergedValue)
-            : (row.WithMergedCellValue(lastValue), lastValue);
-    }
+        var currentValue = getCurrentValue(row);
 
-    private static (T, string) WithValueForMergedSubCell<T>(this T row, Func<T, string> getMergedValue,
-        string lastValue)
-        where T : SpreadsheetReader.IWithMergedSubCell<T>
-    {
-        var mergedValue = getMergedValue(row);
-        return !string.IsNullOrEmpty(mergedValue)
-            ? (row, mergedValue)
-            : (row.WithMergedSubCellValue(lastValue), lastValue);
+        if (!string.IsNullOrEmpty(currentValue))
+        {
+            updatedValue = currentValue;
+            return row;
+        }
+
+        updatedValue = fallbackValue;
+        return withValueFunc(row, fallbackValue);
     }
 }
