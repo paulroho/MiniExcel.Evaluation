@@ -13,14 +13,14 @@ public class ReadingRealisticSpreadsheetSpecs
     }
 
     // ReSharper disable UnusedAutoPropertyAccessor.Local
-    private record RealisticRow : SpreadsheetReader.IRowMarker, 
+    private record RealisticRow : SpreadsheetReader.IRowMarker,
         SpreadsheetReader.IWithMergedCell<RealisticRow>,
         SpreadsheetReader.IWithMergedSubCell<RealisticRow>
     {
         [ExcelColumnName("Group")] public string Group { get; init; } = string.Empty;
         [ExcelColumnName("")] public string Part { get; init; } = string.Empty;
         [ExcelColumnName("The Text")] public string Text { get; init; } = string.Empty;
-        [ExcelColumnName("The Key")] public string Key { get; init; } = string.Empty;
+        [ExcelColumnIndex(4)] public string Key { get; init; } = string.Empty;
         [ExcelColumnName("The Value")] public decimal Value { get; init; }
 
         public bool IsProcessable => !string.IsNullOrWhiteSpace(Text);
