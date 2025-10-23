@@ -59,4 +59,22 @@ public class SpreadsheetReader
     {
         T WithMergedSubCellValue(string value);
     }
+
+    public interface INewRowMarker
+    {
+        bool IsDataRow { get; }
+    }
+
+    public List<T> ReadAllBlocks<T>(string fileName, string sheetName, string startingCell,
+        Expression<Func<T, string>> mergedValueSelector,
+        Expression<Func<T, string>> mergedSubValueSelector)
+        where T : class, INewRowMarker, IWithMergedCell<T>, IWithMergedSubCell<T>, new()
+    {
+        using var stream = File.OpenRead(fileName);
+        return stream
+            .Query<T>(sheetName, startCell: startingCell)
+            .Where(row => row.IsDataRow)
+            .UnrollHierarchicallyMergedCells(mergedValueSelector, mergedSubValueSelector)
+            .ToList();
+    }
 }

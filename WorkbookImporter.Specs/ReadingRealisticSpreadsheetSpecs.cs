@@ -5,10 +5,12 @@ namespace PaulRoho.Evaluate.ReadingWritingWorkbooks.Specs;
 
 public class ReadingRealisticSpreadsheetSpecs
 {
+    private readonly ITestOutputHelper _testOutputHelper;
     private readonly SpreadsheetReader _reader;
 
-    public ReadingRealisticSpreadsheetSpecs()
+    public ReadingRealisticSpreadsheetSpecs(ITestOutputHelper testOutputHelper)
     {
+        _testOutputHelper = testOutputHelper;
         _reader = new SpreadsheetReader();
     }
 
@@ -120,5 +122,37 @@ public class ReadingRealisticSpreadsheetSpecs
             Key = "B_b_B5",
             Value = 1m
         });
+    }
+
+    [Fact]
+    public void CanReadAllBlocksAtOnce()
+    {
+        var blocks = _reader.ReadAllBlocks<CommonRow>(
+            "SampleFiles/RealisticTemplateFilled.xlsx",
+            "Important Sheet",
+            "B4",
+            r => r.Group,
+            r => r.Part);
+        foreach (var row in blocks)
+        {
+            _testOutputHelper.WriteLine($"- [{row.Group} {row.Part}] \"{row.Text}\" {row.Key}: {row.Value}");
+        }
+        blocks.Count.ShouldBe(12);
+        blocks.ShouldAllBe(row =>
+            !string.IsNullOrWhiteSpace(row.Group) &&
+            !string.IsNullOrWhiteSpace(row.Text) &&
+            !string.IsNullOrWhiteSpace(row.Key));
+    }
+
+    private record CommonRow: SpreadsheetReader.INewRowMarker, SpreadsheetReader.IWithMergedCell<CommonRow>, SpreadsheetReader.IWithMergedSubCell<CommonRow>
+    {
+        [ExcelColumnIndex(1)] public string Group { get; init; } = string.Empty;
+        [ExcelColumnIndex(2)] public string Part { get; init; } = string.Empty;
+        [ExcelColumnIndex(3)] public string Text { get; init; } = string.Empty;
+        [ExcelColumnIndex(4)] public string Key { get; init; } = string.Empty;
+        [ExcelColumnIndex(5)] public object Value { get; init; } = null!;
+        public bool IsDataRow => !string.IsNullOrWhiteSpace(Key);
+        public CommonRow WithMergedCellValue(string value) => this with { Group = value };
+        public CommonRow WithMergedSubCellValue(string value) => this with { Part = value };
     }
 }
