@@ -11,14 +11,16 @@ internal static class MergedCellUnrollExtensions
     {
         var getMergedValue = mergedCellSelector.Compile();
 
-        var lastValue = string.Empty;
+        var previousValue = string.Empty;
 
         foreach (var row in originalData)
         {
-            var rowToYield = row.ProcessMergedCell(getMergedValue, lastValue,
-                (r, v) => r.WithMergedCellValue(v), out var updatedValue);
+            var currentValue = getMergedValue(row);
+            var rowToYield = !string.IsNullOrEmpty(currentValue)
+                ? row
+                : row.WithMergedCellValue(previousValue);
 
-            lastValue = updatedValue;
+            previousValue = getMergedValue(rowToYield);
 
             yield return rowToYield;
         }
@@ -33,43 +35,31 @@ internal static class MergedCellUnrollExtensions
         var getMergedMainValue = mergedCellSelector.Compile();
         var getMergedSubValue = mergedSubCellSelector.Compile();
 
-        var lastMainValue = string.Empty;
-        var lastSubValue = string.Empty;
         var previousMainValue = string.Empty;
+        var previousSubValue = string.Empty;
 
         foreach (var row in originalData)
         {
-            var rowWithMainValue = row.ProcessMergedCell(getMergedMainValue, lastMainValue,
-                (r, v) => r.WithMergedCellValue(v), out var updatedMainValue);
+            var currentMainValue = getMergedMainValue(row);
+            var rowWithMainValue = !string.IsNullOrEmpty(currentMainValue)
+                ? row
+                : row.WithMergedCellValue(previousMainValue);
 
+            var updatedMainValue = getMergedMainValue(rowWithMainValue);
             if (updatedMainValue != previousMainValue)
             {
-                lastSubValue = string.Empty;
+                previousSubValue = string.Empty;
             }
 
-            var rowToYield = rowWithMainValue.ProcessMergedCell(getMergedSubValue, lastSubValue,
-                (r, v) => r.WithMergedSubCellValue(v), out var updatedSubValue);
+            var currentSubValue = getMergedSubValue(rowWithMainValue);
+            var rowToYield = !string.IsNullOrEmpty(currentSubValue)
+                ? rowWithMainValue
+                : rowWithMainValue.WithMergedSubCellValue(previousSubValue);
 
-            lastMainValue = updatedMainValue;
-            lastSubValue = updatedSubValue;
             previousMainValue = updatedMainValue;
+            previousSubValue = getMergedSubValue(rowToYield);
 
             yield return rowToYield;
         }
-    }
-
-    private static T ProcessMergedCell<T>(this T row, Func<T, string> getCurrentValue, string fallbackValue,
-        Func<T, string, T> withValueFunc, out string updatedValue)
-    {
-        var currentValue = getCurrentValue(row);
-
-        if (!string.IsNullOrEmpty(currentValue))
-        {
-            updatedValue = currentValue;
-            return row;
-        }
-
-        updatedValue = fallbackValue;
-        return withValueFunc(row, fallbackValue);
     }
 }
